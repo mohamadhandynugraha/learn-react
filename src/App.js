@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      members: []
+    }
+  }
+
+  async componentDidMount() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    console.log(response);
+    const users = await response.json();
+    console.log(users);
+    this.setState({ members: users });
+  }
+
+  render() {
+    return (
+      <div className="App">
+      {
+        this.state.members.map(member => <p key={member.id}> { member.name } </p>)
+      }
     </div>
-  );
+    );
+  }
 }
 
 export default App;
